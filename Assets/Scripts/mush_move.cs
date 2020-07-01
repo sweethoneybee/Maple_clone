@@ -6,7 +6,9 @@ public class mush_move : MonoBehaviour
 {
     
     Animator animator;
+
     bool isJump;
+    bool isMove;
     public float speed;
 
     // Start is called before the first frame update
@@ -27,7 +29,6 @@ public class mush_move : MonoBehaviour
         if(Input.GetButtonDown("Fire1"))
             isJump = !isJump;
 
-        animator.SetBool("isJump", isJump);  
         
         if(Input.GetButton("Horizontal")){
             int dir;
@@ -44,12 +45,23 @@ public class mush_move : MonoBehaviour
 
             // flip
             transform.localScale = characterScale;
+
+            // for move animator
+            isMove = true;
+        }
+        else
+        {
+            isMove = false;
         }
         // if(h < 0){
         //     transform.Translate(Vector3.left * Time.deltaTime);
         //     //transform.position = new Vector3(0, 0, transform.position.z);
         // }
 
+
+        // animator
+        animator.SetBool("isJump", isJump);
+        animator.SetBool("isMove", isMove);
     }
 }
 
