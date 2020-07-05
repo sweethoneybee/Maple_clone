@@ -4,64 +4,81 @@ using UnityEngine;
 
 public class mush_move : MonoBehaviour
 {
-    
     Animator animator;
-
     bool isJump;
-    bool isMove;
-    public float speed;
+    public float speed = 2;
 
-    // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();    
         isJump = false;
-        speed = 2;
     }
 
-    // Update is called once per frame
     void Update()
     {
+        // temp jump animation
+        if(Input.GetButtonDown("Fire1"))
+            isJump = !isJump;
+
         //transform.Translate(Input.GetAxis("Horizontal") * speed * Time.deltaTime, 0f, 0f);
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
-        if(Input.GetButtonDown("Fire1"))
-            isJump = !isJump;
-
-        
+        // Move
+        bool isMove;
         if(Input.GetButton("Horizontal")){
-            int dir;
-            Vector3 characterScale = transform.localScale;
-            if(h > 0){
-                dir = 1;
-                characterScale.x = -2;
-            }
-            else{
-                dir = -1;
-                characterScale.x = 2;
-            }
-            transform.Translate(new Vector3(dir, 0, 0) * speed * Time.deltaTime);
-
-            // flip
-            transform.localScale = characterScale;
-
-            // for move animator
+            int dir = MoveHorizontal(h);
+            SpriteFlip(dir, 2, -2);
             isMove = true;
         }
         else
         {
             isMove = false;
         }
-        // if(h < 0){
-        //     transform.Translate(Vector3.left * Time.deltaTime);
-        //     //transform.position = new Vector3(0, 0, transform.position.z);
-        // }
-
 
         // animator
         animator.SetBool("isJump", isJump);
         animator.SetBool("isMove", isMove);
+    }
+
+    private int MoveHorizontal(float h)
+    {
+        int dir;
+        if (h == 0)
+        {
+            dir = 0;
+        }
+        else if (h > 0)
+        {
+            dir = 1;
+        }
+        else
+        {
+            dir = -1;
+        }
+        transform.Translate(new Vector3(dir, 0, 0).normalized * speed * Time.deltaTime);
+        return dir;
+    }
+    private bool SpriteFlip(int dir, int leftScale, int rightScale)
+    {
+        Vector3 spriteScale = transform.localScale;
+        bool isMove;
+        if (dir == 0)
+        {
+            isMove = false;
+        }
+        else if (dir > 0)
+        {
+            isMove = true;
+            spriteScale.x = rightScale;
+        }
+        else
+        {
+            isMove = true;
+            spriteScale.x = leftScale;
+        }
+        transform.localScale = spriteScale;
+        return isMove;
     }
 }
 
