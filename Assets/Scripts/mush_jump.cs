@@ -8,12 +8,14 @@ public class mush_jump : MonoBehaviour
     bool isJump;
     Rigidbody2D rb;
     public int jumpPower;
+
+    public double v_y;
     void Start()
     {
         animator = GetComponent<Animator>();
         isJump = false;
         rb = GetComponent<Rigidbody2D>();
-        jumpPower = 2;
+        jumpPower = 200;
     }
 
     private void FixedUpdate()
@@ -25,10 +27,11 @@ public class mush_jump : MonoBehaviour
             rb.AddForce(new Vector2(0, jumpPower));
         }
 
-        if(rb.velocity.y <= 0)
+        if(rb.velocity.y == 0)
         {
             isJump = false;
         }
+        v_y=  rb.velocity.y;
     }
     // Update is called once per frame
     void Update()
@@ -38,5 +41,6 @@ public class mush_jump : MonoBehaviour
         //{ 
         //    transform.Translate(new Vector3(0, v, 0) * Time.deltaTime);
         //}
+        animator.SetBool("isJump", isJump);
     }
 }

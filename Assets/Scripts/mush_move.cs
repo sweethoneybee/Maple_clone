@@ -5,27 +5,21 @@ using UnityEngine;
 public class mush_move : MonoBehaviour
 {
     Animator animator;
-    bool isJump;
     public float speed = 2;
 
     void Start()
     {
-        animator = GetComponent<Animator>();    
-        isJump = false;
+        animator = GetComponent<Animator>();
     }
 
     void Update()
     {
-        // temp jump animation
-        if(Input.GetButtonDown("Fire1"))
-            isJump = !isJump;
-
         //transform.Translate(Input.GetAxis("Horizontal") * speed * Time.deltaTime, 0f, 0f);
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
         // Move
-        bool isMove;
+        bool isMove; 
         if(Input.GetButton("Horizontal")){
             int dir = MoveHorizontal(h);
             SpriteFlip(dir, 2, -2);
@@ -37,8 +31,15 @@ public class mush_move : MonoBehaviour
         }
 
         // animator
-        animator.SetBool("isJump", isJump);
-        animator.SetBool("isMove", isMove);
+        bool isJump = animator.GetBool("isJump");
+        if (!isJump)
+        {
+            animator.SetBool("isMove", isMove);
+        }
+        else
+        {
+            animator.SetBool("isMove", false);
+        }
     }
 
     private int MoveHorizontal(float h)
