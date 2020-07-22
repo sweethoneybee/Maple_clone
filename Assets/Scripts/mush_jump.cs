@@ -20,6 +20,14 @@ public class mush_jump : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(rb.velocity.y == 0)
+        {
+            isJump = false;
+        }
+        else
+        {
+            isJump = true;
+        }
         if(Input.GetButton("Vertical") == true && isJump == false)
         {
             isJump = true;
@@ -27,10 +35,6 @@ public class mush_jump : MonoBehaviour
             rb.AddForce(new Vector2(0, jumpPower));
         }
 
-        if(rb.velocity.y == 0)
-        {
-            isJump = false;
-        }
         v_y=  rb.velocity.y;
     }
     // Update is called once per frame
