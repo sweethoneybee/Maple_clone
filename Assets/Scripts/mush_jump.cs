@@ -15,11 +15,29 @@ public class mush_jump : MonoBehaviour
         animator = GetComponent<Animator>();
         isJump = false;
         rb = GetComponent<Rigidbody2D>();
-        jumpPower = 200;
+        jumpPower = 300;
     }
 
-    private void FixedUpdate()
+    //private void FixedUpdate()
+    //{ 
+    //    if(Input.GetKeyDown(KeyCode.UpArrow) == true && isJump == false)
+    //    {
+    //        isJump = true;
+    //        //rb.AddForce(new Vector2(0, jumpPower), ForceMode.Impulse);
+    //        rb.AddForce(new Vector2(0, jumpPower));
+    //    }
+
+    //}
+    // Update is called once per frame
+    void Update()
     {
+        if (Input.GetKeyDown(KeyCode.UpArrow) == true && isJump == false)
+        {
+            Debug.Log("wow");
+            isJump = true;
+            //rb.AddForce(new Vector2(0, jumpPower), ForceMode.Impulse);
+            rb.AddForce(new Vector2(0, jumpPower));
+        }
         if(rb.velocity.y == 0)
         {
             isJump = false;
@@ -28,23 +46,9 @@ public class mush_jump : MonoBehaviour
         {
             isJump = true;
         }
-        if(Input.GetButton("Vertical") == true && isJump == false)
-        {
-            isJump = true;
-            //rb.AddForce(new Vector2(0, jumpPower), ForceMode.Impulse);
-            rb.AddForce(new Vector2(0, jumpPower));
-        }
-
-        v_y=  rb.velocity.y;
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        //float v = Input.GetAxis("Vertical");
-        //if (Input.GetButton("Vertical") == true)
-        //{ 
-        //    transform.Translate(new Vector3(0, v, 0) * Time.deltaTime);
-        //}
         animator.SetBool("isJump", isJump);
+
+        // only for speed check
+        v_y = rb.velocity.y;
     }
 }
